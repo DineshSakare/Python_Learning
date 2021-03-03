@@ -1,0 +1,37 @@
+import re
+import os
+filelist=[]
+for subdir, dirs, files in os.walk(r'/Users/dineshsakare/Downloads'):
+    for filename in files:
+        filepath = subdir + os.sep + filename
+        #print(filepath)
+        if filepath.endswith(".log"):
+            #print (filepath)
+            filelist.append(filepath)
+            for list in filelist:
+                print('-'*10)
+                #print(list)
+
+errors = []
+linenum = 0
+for list in filelist:
+    print('checking for filenames')
+    print(list)
+    pattern = re.compile("error", re.IGNORECASE)  # Compile a case-insensitive regex
+    with open (list, 'rt') as myfile:    
+        for line in myfile:
+            linenum += 1
+            if pattern.search(line) != None:      # If a match is found 
+                errors.append((linenum, line.rstrip('\n')))
+#for err in errors:                            # Iterate over the list of tuples
+#print("Line " + str(err[0]) + ": " + err[1])
+#print(err[1])
+
+with open('/Users/dineshsakare/Downloads/LogFile_Updated.txt','a') as newfile:
+    for line in errors:
+            linenum+=1
+            newfile.write(str(line[1])+"\n")
+            #print(line[0])
+            #print(line[1])
+            #newfile.write('/n'.join('{}'.format(line[1])))
+        
